@@ -40,8 +40,8 @@ let e_closure (nfa: ('q,'s) nfa_t) (qs: 'q list) : 'q list =
               | (x,y,z) ->  if List.mem x qs then (if y = None then 
                                                   (if List.mem x a && List.mem z a then a else (if List.mem x a then z::a else 
                                                                                                 (if  List.mem z a then x::a else x::z::a)))) 
-                                                                                                                            else (if List.mem x a then a else x::a  else 
-                                                                                                                            (if List.mem z qs && !(List.mem z a) then z::a else a)))
+                                                                                                                            else (if List.mem x a then a else x::a)  
+                                                                                                                          else(if List.mem z qs && !(List.mem z a) then z::a else a))
                                               in  List.fold_left f [] nfa.delta
 
 let accept (nfa: ('q,char) nfa_t) (s: string) : bool =
