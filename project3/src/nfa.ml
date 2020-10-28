@@ -32,8 +32,8 @@ let explode (s: string) : char list =
 
 let move (nfa: ('q,'s) nfa_t) (qs: 'q list) (s: 's option) : 'q list =
   let f a b = (match b with
-              | [] -> a
-              | (x,y,z) -> if List.mem x qs && y = s then z::a else a ) in List.fold_left f [] nfa.delta
+              | (x,y,z) -> if List.mem x qs then (if y = s then z::a else a) else a)
+                                              in  List.fold_left f [] nfa.delta
 
 let e_closure (nfa: ('q,'s) nfa_t) (qs: 'q list) : 'q list =
   failwith "unimplemented"
