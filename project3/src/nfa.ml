@@ -37,7 +37,7 @@ let move (nfa: ('q,'s) nfa_t) (qs: 'q list) (s: 's option) : 'q list =
 
 let e_closure (nfa: ('q,'s) nfa_t) (qs: 'q list) : 'q list =
   let f a b = (match b with
-              | (x,y,z) -> if List.mem x qs then (if y = None then x::z::a else x::a) else a)
+              | (x,y,z) -> if List.mem x qs then (if y = None then x::z::a else x::a) else (if a=[] then qs else a))
                                               in  List.fold_left f [] nfa.delta
 
 let accept (nfa: ('q,char) nfa_t) (s: string) : bool =
