@@ -36,7 +36,9 @@ let move (nfa: ('q,'s) nfa_t) (qs: 'q list) (s: 's option) : 'q list =
                                               in  List.fold_left f [] nfa.delta
 
 let e_closure (nfa: ('q,'s) nfa_t) (qs: 'q list) : 'q list =
-  failwith "unimplemented"
+  let f a b = (match b with
+              | (x,y,z) -> if List.mem x qs then z::a else a)
+                                              in  List.fold_left f [] nfa.delta
 
 let accept (nfa: ('q,char) nfa_t) (s: string) : bool =
   failwith "unimplemented"
