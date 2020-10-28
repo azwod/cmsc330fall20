@@ -31,8 +31,7 @@ let explode (s: string) : char list =
 (****************)
 
 let move (nfa: ('q,'s) nfa_t) (qs: 'q list) (s: 's option) : 'q list =
-  failwith "unimplemented"
-
+  k
 let e_closure (nfa: ('q,'s) nfa_t) (qs: 'q list) : 'q list =
   failwith "unimplemented"
 
