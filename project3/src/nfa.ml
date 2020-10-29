@@ -76,7 +76,10 @@ let new_states (nfa: ('q,'s) nfa_t) (qs: 'q list) : 'q list list =
    if qs = [] then (let rec r p g = (match g with
                                   | h::t -> []::p
                                   | [] -> p) in r [] nfa.delta) else (let f a b = (match b with
-                                                                | k -> (new_states_helper nfa k)::a) in  List.fold_left f [] qs)
+                                                                | k -> (new_states_helper nfa k)::a) in  if List.length (List.fold_left f [] qs) = List.length (nfa.sigma) then List.fold_left f [] qs else 
+                                                                                                        (let rec add q v = (match v with
+                                                                                                                            | u::w -> add ([]::q) w
+                                                                                                                            | [] -> q) in add (List.fold_left f [] qs) (List.length (nfa.sigma)) )
 
 let new_trans (nfa: ('q,'s) nfa_t) (qs: 'q list) : ('q list, 's) transition list =
   failwith "unimplemented"
