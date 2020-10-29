@@ -69,7 +69,7 @@ let explode (s: string) : char list =
 
 let new_states (nfa: ('q,'s) nfa_t) (qs: 'q list) : 'q list list = 
   let rec f a b = ( match a with
-                      | h::t -> f t ((move nfa qs (Some h)::b)
+                      | h::t -> f t ((move nfa qs (Some h)::b))
                       | [] -> b) in f (nfa.sigma) []   
 
 
