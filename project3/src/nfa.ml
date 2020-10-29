@@ -52,7 +52,7 @@ let explode (s: string) : char list =
   let rec accept_helper (nfa: ('q,char) nfa_t) (c: char list) : bool =
     match c with
     | h::t -> (match nfa.delta with
-               | a::b -> if accept_helper_part2 a h then accept_helper b t)
+               | a::b -> if accept_helper_part2 a.delta h then accept_helper b t)
     | _ -> true
 
   let accept (nfa: ('q,char) nfa_t) (s: string) : bool =
