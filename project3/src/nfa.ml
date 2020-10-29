@@ -69,7 +69,7 @@ let explode (s: string) : char list =
 (*******************************)
 let rec loop (nfa: ('q, 's) nfa_t) (s: 's) (l: 'q list) (qs: 'q list): 'q list = 
      let f a b = (match b with
-                | (x,y,z) -> if y = (Some s) && (List.mem x qs) then (if List.mem z a then a else (loop nfa s z a)@a) else (if y = None then (if List.mem z a then a else loop nfa s z a)@a) else a))
+                | (x,y,z) -> if y = (Some s) && (List.mem x qs) then (if List.mem z a then a else (loop nfa s z a)@a) else (if y = None then (if List.mem z a then a else (loop nfa s z a)@a) else a))
                                                 in  List.fold_left f l nfa.delta
 
 
