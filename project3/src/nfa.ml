@@ -57,7 +57,7 @@ let explode (s: string) : char list =
     | _ -> true
 
   let accept (nfa: ('q,char) nfa_t) (s: string) : bool =
-    if s = "" then false else accept_helper nfa.delta (s.explode)
+    if s = "" then false else accept_helper nfa.delta (explode s)
 
 
 (*******************************)
