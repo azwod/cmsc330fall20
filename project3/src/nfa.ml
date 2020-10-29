@@ -53,7 +53,7 @@ let explode (s: string) : char list =
     match c with
     | h::t -> (match nfa with
                | a::b -> if accept_helper_part2 a h then accept_helper nfa t (match a with
-                                                                              | (x,y,z) -> [z]
+                                                                              | (x,y,z) -> z
                                                                               )else accept_helper b c place::['l']
                | _ -> place) 
     | _ -> place
