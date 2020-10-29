@@ -66,20 +66,12 @@ let explode (s: string) : char list =
 
 (*******************************)
 (* Part 2: Subset Construction *)
-(*******************************)
-let new_states_helper (nfa: ('q,'s) nfa_t) (q: 'q) : 'q list = 
-  let f a b = (match b with
-                | (x,y,z) -> if x = q then (if List.mem z a then a else z::a) else (if y = None then (if List.mem z a then a else z::a) else a))
-                                                in  List.fold_left f [] nfa.delta
 
-let new_states (nfa: ('q,'s) nfa_t) (qs: 'q list) : 'q list list =
-   if qs = [] then (let rec r p g = (match g with
-                                  | h::t -> []::p
-                                  | [] -> p) in r [] nfa.delta) else (let f a b = (match b with
-                                                                | k -> (new_states_helper nfa k)::a) in  if List.length (List.fold_left f [] qs) = List.length (nfa.sigma) then List.fold_left f [] qs else 
-                                                                                                        (let rec add q v = (match v with
-                                                                                                                            | u::w -> add ([]::q) w
-                                                                                                                            | [] -> q) in add (List.fold_left f [] qs) (nfa.sigma) ))
+let new_states (nfa: ('q,'s) nfa_t) (qs: 'q list) : 'q list list = 
+  let rec f a b = ( match a with
+                      | h::t -> f t ((move nfa qs h)::b)
+                      | [] -> b) in f (nfa.sigma) []   
+
 
 let new_trans (nfa: ('q,'s) nfa_t) (qs: 'q list) : ('q list, 's) transition list =
   failwith "unimplemented"
