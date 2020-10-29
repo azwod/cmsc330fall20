@@ -70,7 +70,7 @@ let explode (s: string) : char list =
 let new_states_helper (n: ('q,'s) nfa_t) (q: 'q) : 'q list = 
   let rec f a b = (match b with
                 |h::t -> (match h with
-                          | (x,y,z) -> (if List.mem x q then (if List.mem z a then a else z::a) else (if y = None then (if List.mem z a then a else z::a) else a)))::a
+                          | (x,y,z) -> (if List.mem x q then (if List.mem z a then nil else z) else (if y = None then (if List.mem z a then nil else z) else nil)))::a
                 |[] -> a ) in f [] n.delta
 
 let new_states (nfa: ('q,'s) nfa_t) (qs: 'q list) : 'q list list =
