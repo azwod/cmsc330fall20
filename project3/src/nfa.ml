@@ -49,16 +49,17 @@ let explode (s: string) : char list =
                | (x,y,z) -> 
                if y = Some h then true else (if y = None then true else false)
 
-  let rec accept_helper (nfa: ('q, 's) transition list) (c: char list) : bool =
+  let rec accept_helper (nfa: ('q, 's) transition list) (c: char list) (place: 'q): 'q =
     match c with
     | h::t -> (match nfa with
-               | a::b -> if accept_helper_part2 a h then accept_helper nfa t else accept_helper b c
-               | _ -> false) 
-    | _ -> true
+               | a::b -> if accept_helper_part2 a h then accept_helper nfa t (match a with
+                                                                              | (x,y,z) -> z
+                                                                              )else accept_helper b c place
+               | _ -> if place) 
+    | _ -> place
 
   let accept (nfa: ('q,char) nfa_t) (s: string) : bool =
-    if s = "" then false else accept_helper nfa.delta (explode s)
-
+    if s = "" then false else (if List.mem (accept_helper nfa.delta (explode s) nfa.q0) nfa.fs then true else false)
 
 (*******************************)
 (* Part 2: Subset Construction *)
