@@ -55,7 +55,7 @@ let explode (s: string) : char list =
                | a::b -> if accept_helper_part2 a h then accept_helper nfa t (match a with
                                                                               | (x,y,z) -> z
                                                                               )else accept_helper b c place
-               | _ -> if place) 
+               | _ -> place) 
     | _ -> place
 
   let accept (nfa: ('q,char) nfa_t) (s: string) : bool =
