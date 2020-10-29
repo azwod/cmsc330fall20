@@ -44,7 +44,7 @@ let explode (s: string) : char list =
                                                                                                                               else (if List.mem z qs then (
                                                                                                                               if List.mem z a then a else z::a)else a))
                                                                                                                               in  List.fold_left f [] nfa.delta
-  let rec accept_helper_part2  (a: 'q * 's option * 'q) (h: char) : bool =
+  let rec accept_helper_part2  (a: ('q, 's) transition) (h: char) : bool =
     match a with
                | (x,y,z) -> 
                if y = Some h then true else (if y = None then true else false)
@@ -52,7 +52,7 @@ let explode (s: string) : char list =
   let rec accept_helper (nfa: ('q,char) nfa_t) (c: char list) : bool =
     match c with
     | h::t -> (match nfa.delta with
-               | a::b -> if accept_helper_part2 a.delta h then accept_helper b t)
+               | a::b -> if accept_helper_part2 a h then accept_helper b t)
     | _ -> true
 
   let accept (nfa: ('q,char) nfa_t) (s: string) : bool =
