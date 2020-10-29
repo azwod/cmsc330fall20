@@ -55,13 +55,13 @@ let explode (s: string) : char list =
                | a::b -> if accept_helper_part2 a h then accept_helper nfa t (match a with
                                                                               | (x,y,z) -> [z]
                                                                               )else accept_helper b c place @ ['l']
-               | _ -> place) 
-    | _ -> place
+               | [] -> place) 
+    | [] -> place
 
   let accept (nfa: ('q,char) nfa_t) (s: string) : bool =
     if s = "" then false else (match (accept_helper nfa.delta (explode s) [nfa.q0]) with
                               | a::b -> if b = [] then(if List.mem a nfa.fs then true else false) else false
-                              | _ -> false) 
+                              | [] -> false) 
                               
 
 (*******************************)
