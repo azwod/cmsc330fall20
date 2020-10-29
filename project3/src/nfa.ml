@@ -45,12 +45,12 @@ let explode (s: string) : char list =
                                                                                                                               if List.mem z a then a else z::a)else a))
                                                                                                                               in  List.fold_left f [] nfa.delta
 
-  let rec accept_helper (nfa: ('q,char) nfa_t) (c: char list) : bool =
+  (*let rec accept_helper (nfa: ('q,char) nfa_t) (c: char list) : bool =
     match c with
     | h::t -> (match nfa.delta with
                | a::b -> 
                if y = Some h then accept_helper nfa t else (if y = None then accept_helper nfa t else false))
-    | _ -> true
+    | _ -> true*)
 
   let accept (nfa: ('q,char) nfa_t) (s: string) : bool =
     if s="" then false else true (*else accept_helper nfa.delta (s.explode)*)
