@@ -70,11 +70,12 @@ let explode (s: string) : char list =
 let new_states_helper (n: ('q, 's) transition list) (q: 'q) : 'q list = 
   let f a b = (match b with
                 | (x,y,z) -> if List.mem x q then (if List.mem z a then a else z::a) else (if y = None then (if List.mem z a then a else z::a) else a))
-                                                in  List.fold_left f [] n
+                                                in List.fold_left f [] n
 
 let new_states (nfa: ('q,'s) nfa_t) (qs: 'q list) : 'q list list =
    let r a b = (match b with
-                | k -> (new_states_helper (nfa.delta) k)::a   
+                | k -> (new_states_helper (match nfa with
+                                           | (a,b)::t -> t) k)::a   
                 | [] -> a) 
                 in  List.fold_left r [] qs
 
