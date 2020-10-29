@@ -67,9 +67,9 @@ let explode (s: string) : char list =
 (*******************************)
 (* Part 2: Subset Construction *)
 (*******************************)
-let rec loop (nfa: ('q, 's) nfa_t) (s: 's) (l: 'q list) (qs: 'q list): 'q list = 
+let rec loop (nfa: ('q, 's) nfa_t) (s: 's) (l: 'q list) (qs: 'q list) : 'q list = 
      let f a b = (match b with
-                | (x,y,z) -> if (y = (Some s)) && (List.mem x qs) then (if List.mem z a then a else (loop nfa s z l) @ a) else (if y = None then (if List.mem z a then a else (loop nfa s z l) @ a) else a))
+                | (x,y,z) -> if (y = (Some s)) && (List.mem x qs) then (if List.mem z a then a else (loop nfa s a qs) @ a) else (if y = None then (if List.mem z a then a else (loop nfa s a qs) @ a) else a))
                                                 in  List.fold_left f l nfa.delta
 
 
