@@ -60,7 +60,7 @@ let explode (s: string) : char list =
 
   let accept (nfa: ('q,char) nfa_t) (s: string) : bool =
     if s = "" then false else (match (accept_helper nfa.delta (explode s) [nfa.q0]) with
-                              | a::b -> if b = [] then(if List.mem a nfa.fs then true else false) else false
+                              | a::b -> if b = [] then(if List.mem a nfa.fs then Printf.eprintf "hello world!" true else false) else false
                               | [] -> false) 
                               
 
