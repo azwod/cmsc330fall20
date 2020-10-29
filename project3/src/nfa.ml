@@ -49,18 +49,18 @@ let explode (s: string) : char list =
                | (x,y,z) -> 
                if y = (Some h) then true else (if y = None then true else false)
 
-  let rec accept_helper (nfa: ('q, 's) transition list) (c: char list) (place: 'q list): 'q list =
+  let rec accept_helper (nfa: ('q, 's) transition list) (c: char list) (place: 'q list) (nfa_fake: ('q, 's) transition list): 'q list =
     match c with
-    | h::t -> (match nfa with
+    | h::t -> (match nfa_fake with
                | a::b -> if accept_helper_part2 a h then accept_helper nfa t (match a with
                                                                               | (x,y,z) -> [z]
-                                                                              )else accept_helper b c place @ place
+                                                                              ) nfa else accept_helper nfa c (place @ place) b
                | [] -> place) 
     | [] -> place
 
   let accept (nfa: ('q,char) nfa_t) (s: string) : bool =
-    if s = "" then false else (match (accept_helper nfa.delta (explode s) [nfa.q0]) with
-                              | a::b -> if b = [] then(if List.mem a nfa.fs then Printf.eprintf "hello world!" true else false) else false
+    if s = "" then false else (match (accept_helper nfa.delta (explode s) [nfa.q0] nfa.delta) with
+                              | a::b -> if b = [] then(if List.mem a nfa.fs then true else false) else false
                               | [] -> false) 
                               
 
