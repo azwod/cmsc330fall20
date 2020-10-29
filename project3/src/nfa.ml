@@ -75,7 +75,7 @@ let new_states_helper (nfa: ('q,'s) nfa_t) (q: 'q) : 'q list =
 let new_states (nfa: ('q,'s) nfa_t) (qs: 'q list) : 'q list list =
    let f a b = (match b with
                 | k -> (new_states_helper nfa k)::a   
-                | [] -> a) in  List.fold_left f [] qs
+                | _ -> a) in  List.fold_left f [] qs
 
 let new_trans (nfa: ('q,'s) nfa_t) (qs: 'q list) : ('q list, 's) transition list =
   failwith "unimplemented"
