@@ -47,7 +47,7 @@ let explode (s: string) : char list =
   let rec accept_helper_part2  (a: ('q, 's) transition) (h: char) : bool =
     match a with
                | (x,y,z) -> 
-               if y = Some h then true else (if y = None then true else false)
+               if y = (Some h) then true else (if y = None then true else false)
 
   let rec accept_helper (nfa: ('q, 's) transition list) (c: char list) (place: 'q list): 'q list =
     match c with
