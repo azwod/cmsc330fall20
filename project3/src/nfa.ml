@@ -75,7 +75,7 @@ let new_states_helper (nfa: ('q,'s) nfa_t) (q: 'q) : 'q list =
 let new_states (nfa: ('q,'s) nfa_t) (qs: 'q list) : 'q list list =
    if qs = [] then (let rec r p g = (match g with
                                   | h::t -> []::p
-                                  | [] -> p) in [] nfa.delta) else (let f a b = (match b with
+                                  | [] -> p) in r [] nfa.delta) else (let f a b = (match b with
                                                                 | k -> (new_states_helper nfa k)::a) in  List.fold_left f [] qs)
 
 let new_trans (nfa: ('q,'s) nfa_t) (qs: 'q list) : ('q list, 's) transition list =
