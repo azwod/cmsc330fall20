@@ -67,9 +67,15 @@ let explode (s: string) : char list =
 (*******************************)
 (* Part 2: Subset Construction *)
 (*******************************)
+let rec loop nfa (nfa: ('q, 's) nfa_t) (s: 's) (q: 'q) (l: 'q list): 'q list = 
+     let f a b = (match b with
+                | (x,y,z) -> if z = x && y = (Some s) then (if List.mem z a then q::a else loop nfa s z a) else q::a else(if y = None then (if List.mem z a then q::a else loop nfa s z a) else q::a))
+                                                in  List.fold_left f l nfa.delta
+
+
 let new_states_helper (nfa: ('q, 's) nfa_t) (s: 's) (qs: 'q list) : 'q list = 
   let f a b = (match b with
-                | (x,y,z) -> if List.mem x qs then (if y = (Some s) then(if List.mem z a then a else z::a) else a) else (if y = None && (List.mem x a)then(if List.mem z a then a else z::a)else a))
+                | (x,y,z) -> if List.mem x qs then (if y = (Some s) then (if List.mem z a then a else(if List.mem z qs then loop nfa s z a else z::a)) else a) else (if y = None && (List.mem x a)then(if List.mem z a then a else z::a)else a))
                                                 in  List.fold_left f [] nfa.delta
 
 let new_states (nfa: ('q,'s) nfa_t) (qs: 'q list) : 'q list list = 
