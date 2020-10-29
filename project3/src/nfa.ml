@@ -67,7 +67,7 @@ let explode (s: string) : char list =
 (*******************************)
 (* Part 2: Subset Construction *)
 (*******************************)
-let new_states_helper (nfa: ('q, 's) transition list) (q: 'q) : 'q list = 
+let new_states_helper (n: ('q, 's) transition list) (q: 'q) : 'q list = 
   let rec f a b = (match b with
                 |h::t -> (match h with
                           | (x,y,z) -> (if List.mem x q || ((List.mem z a) = false) then z::a  else f a t)) @ a
