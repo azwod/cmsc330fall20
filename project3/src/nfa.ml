@@ -73,7 +73,7 @@ let new_states_helper (nfa: ('q,'s) nfa_t) (q: 'q) : 'q list =
                                                 in  List.fold_left f [] nfa.delta
 
 let new_states (nfa: ('q,'s) nfa_t) (qs: 'q list) : 'q list list =
-   if qs then (new_states_helper nfa (''))::[] else (let f a b = (match b with
+   if qs = [] then (new_states_helper nfa (''))::[] else (let f a b = (match b with
                                                                 | k -> (new_states_helper nfa k)::a) in  List.fold_left f [] qs)
 
 let new_trans (nfa: ('q,'s) nfa_t) (qs: 'q list) : ('q list, 's) transition list =
