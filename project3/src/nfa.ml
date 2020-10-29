@@ -67,15 +67,16 @@ let explode (s: string) : char list =
 (*******************************)
 (* Part 2: Subset Construction *)
 (*******************************)
-let rec loop (nfa: ('q, 's) nfa_t) (s: 's) (q: 'q) (l: 'q list): 'q list = 
+let rec loop (nfa: ('q, 's) nfa_t) (s: 's) (l: 'q list) (qs: 'q list): 'q list = 
      let f a b = (match b with
-                | (x,y,z) -> if z = x && y = (Some s) then (if List.mem z a then q::a else loop nfa s z a) else (if y = None then (if List.mem z a then q::a else loop nfa s z a) else q::a))
+                | (x,y,z) -> if y = (Some s) && (List.mem x qs) then (if List.mem z a then a else (loop nfa s z a)@a) else (if y = None then (if List.mem z a then a else loop nfa s z a)@a) else a))
                                                 in  List.fold_left f l nfa.delta
+
 
 
 let new_states_helper (nfa: ('q, 's) nfa_t) (s: 's) (qs: 'q list) : 'q list = 
   let f a b = (match b with
-                | (x,y,z) -> if List.mem x qs then (if y = (Some s) then (if List.mem z a then a else(if List.mem z qs then loop nfa s z a else z::a)) else a) else (if y = None && (List.mem x qs)then(if List.mem z a then a else z::a)else a))
+                | (x,y,z) -> if List.mem x qs then (if y = (Some s) then (if List.mem z a then a else(if List.mem z qs then loop nfa s (z::a) qs else z::a)) else a) else (if y = None && (List.mem x qs)then(if List.mem z a then a else z::a)else a))
                                                 in  List.fold_left f [] nfa.delta
 
 let new_states (nfa: ('q,'s) nfa_t) (qs: 'q list) : 'q list list = 
