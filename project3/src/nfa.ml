@@ -49,9 +49,9 @@ let explode (s: string) : char list =
                | (x,y,z) -> 
                if y = Some h then true else (if y = None then true else false)
 
-  let rec accept_helper (nfa: ('q,char) nfa_t) (c: char list) : bool =
+  let rec accept_helper (nfa: ('q, 's) transition list) (c: char list) : bool =
     match c with
-    | h::t -> (match nfa.delta with
+    | h::t -> (match nfa with
                | a::b -> if accept_helper_part2 a h then accept_helper b t)
     | _ -> true
 
