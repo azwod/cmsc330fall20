@@ -31,8 +31,8 @@ let rec regexp_to_nfa (regexp: regexp_t) : (int, char) nfa_t =
   | Empty_String -> {sigma = []; qs = [0]; q0 = 0; fs = [0]; delta = []}
   | Char c ->  {sigma = [c]; qs = [0;1]; q0 = 0; fs = [1]; delta = [(0, Some c, 1)]}
   | Union (x,y) -> {sigma = (regexp_to_nfa x).sigma @ (regexp_to_nfa y).sigma; qs = (regexp_to_nfa x).qs @ (regexp_to_nfa y).qs; q0 = 0; fs = (regexp_to_nfa x).fs @ (regexp_to_nfa y).fs; delta = [(List.hd (regexp_to_nfa x).fs, None, 1); (List.hd (regexp_to_nfa y).fs, None, 1)]  @ ((regexp_to_nfa x).delta @ (regexp_to_nfa y).delta)}
-  | Concat (x,y) -> {sigma = [x]; qs = [0;1]; q0 = 0; fs = [1]; delta = [(0, None, 1)]}
-  | Star c -> {sigma = [c]; qs = [0;1]; q0 = 0; fs = [1]; delta = [(0, None, 1)]}
+  | Concat (x,y) -> {sigma = []; qs = [0;1]; q0 = 0; fs = [1]; delta = [(0, None, 1)]}
+  | Star c -> {sigma = []; qs = [0;1]; q0 = 0; fs = [1]; delta = [(0, None, 1)]}
 
 (*****************************************************************)
 (* Below this point is parser code that YOU DO NOT NEED TO TOUCH *)
