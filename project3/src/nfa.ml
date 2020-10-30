@@ -95,7 +95,7 @@ let new_trans (nfa: ('q,'s) nfa_t) (qs: 'q list) : ('q list, 's) transition list
 let new_finals (nfa: ('q,'s) nfa_t) (qs: 'q list) : 'q list list =
    let rec f a b = ( match a with
                       | h::t -> if List.mem h qs then qs::b else f t b
-                      | [] -> [b]) in f nfa.fs []  
+                      | [] -> []) in f nfa.fs []  
 
 let rec nfa_to_dfa_step (nfa: ('q,'s) nfa_t) (dfa: ('q list, 's) nfa_t)
     (work: 'q list list) : ('q list, 's) nfa_t =
