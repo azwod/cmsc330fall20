@@ -45,8 +45,8 @@ let explode (s: string) : char list =
                                                                                                                               if List.mem z a then a else z::a)else a))
                                                                                                                               in  List.fold_left f [] nfa.delta*)
     let e_closure (nfa: ('q,'s) nfa_t) (qs: 'q list) : 'q list =
-          let f a b = (match b with
-                | (x,y,z) -> if (List.mem x qs && y = None ) || (List.mem x a && y = None ) then (if List.mem z a then a else z::a) else a)
+          let f a b = match b with
+                | (x,y,z) -> if ((List.mem x qs && y = None ) || (List.mem x a && y = None)) then (if List.mem z a then a else z::a) else a
                                                 in  List.fold_left f [] nfa.delta
 
   (*let rec path(nfa: ('q, char) nfa_t) (s: char) (q: 'q * bool) : 'q * bool = 
