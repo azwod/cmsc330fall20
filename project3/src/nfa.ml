@@ -45,14 +45,14 @@ let explode (s: string) : char list =
                                                                                                                               if List.mem z a then a else z::a)else a))
                                                                                                                               in  List.fold_left f [] nfa.delta
 
-  let rec path(nfa: ('q, char) nfa_t) (s: char) (q: 'q) : 'q * bool = 
+  let rec path(nfa: ('q, char) nfa_t) (s: char) (q: 'q * bool) : 'q * bool = 
      let f a b = (match b with
                 | (x,y,z) -> if y = (Some s) then (z,true) else (if y = None then (z,true) else (x,false)))
                                                 in  List.fold_left f q nfa.delta
 
   let rec accept_helper (nfa: ('q, char) nfa_t) (s: char list) (curr: 'q) : bool = 
     match s with
-    | h::t -> if (match path nfa h (curr, true) with
+    | h::t -> if (match path nfa h (curr,true) with
                   | (a,b) -> b) then accept_helper nfa t (match path nfa h curr with
                                                           | (a,b) -> a) else false 
     | [] -> List.mem curr nfa.fs
