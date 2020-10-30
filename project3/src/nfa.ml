@@ -100,5 +100,10 @@ let rec nfa_to_dfa_step (nfa: ('q,'s) nfa_t) (dfa: ('q list, 's) nfa_t)
     (work: 'q list list) : ('q list, 's) nfa_t =
   failwith "unimplemented"
 
+let rec nfa_to_dfa_help nfa dfa work taken = 
+  match work with
+  | h::t -> if ((List.mem h taken)=false) then nfa_to_dfa_help nfa {sigma=dfa.sigma; qs=union (filter (fun x -> x <> []) (new_states nfa h)) dfa.qs; q0 = dfa.q0; fs=dfa.fs; delta= union (filter (fun (v,p,o)-> o <> [])(new_trans nfa h)) dfa.delta }(union(filter (fun x -> x <> [])(new_states nfa h)) work) (union [h] used) else nfa_to_dfa_help nfa dfa t taken
+  | [] -> {sigma=dfa.sigma; qs=dfa.qs; q0=dfa.q0; fs= List.fold_left (fun a x -> union (new_finals nfa x) a) [] dfa.qs; delta=dfa.delta}
+
 let nfa_to_dfa (nfa: ('q,'s) nfa_t) : ('q list, 's) nfa_t =
-  failwith "unimplemented"
+  nfa_to_dfa_help nfa {sigma=nfa.sigma; qs= [(e_closure nfa [nfa.q0])]; q0=(e_closure nfa [nfa.q0]); fs=[]; delta=[] } [e_closure nfa [nfa.q0]] []
