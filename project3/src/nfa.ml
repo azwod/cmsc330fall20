@@ -93,7 +93,9 @@ let new_trans (nfa: ('q,'s) nfa_t) (qs: 'q list) : ('q list, 's) transition list
                       | [] -> b) in f (nfa.sigma) []
 
 let new_finals (nfa: ('q,'s) nfa_t) (qs: 'q list) : 'q list list =
-  failwith "unimplemented"
+   let rec f a b = ( match a with
+                      | h::t -> f t ((f t b)::b)
+                      | [] -> b) in f nfa.fs []  
 
 let rec nfa_to_dfa_step (nfa: ('q,'s) nfa_t) (dfa: ('q list, 's) nfa_t)
     (work: 'q list list) : ('q list, 's) nfa_t =
