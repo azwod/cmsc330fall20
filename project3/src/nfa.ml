@@ -60,13 +60,7 @@ let explode (s: string) : char list =
   let accept (nfa: ('q,char) nfa_t) (s: string) : bool =
     accept_helper nfa (explode s) nfa.q0*)
   
-  let rec accept_help nfa lis s= 
-    match s with
-    | h::t -> accept_help nfa (move nfa lis (Some h)) t
-    | [] -> lis
 
-  let accept (nfa: ('q,char) nfa_t) (s: string) : bool =
-    List.mem (accept_help nfa (nfa_to_dfa nfa).q0 (explode s)) (nfa_to_dfa nfa).fs
 
 
                               
@@ -115,3 +109,11 @@ let rec nfa_to_dfa_help nfa dfa work taken =
 
 let nfa_to_dfa (nfa: ('q,'s) nfa_t) : ('q list, 's) nfa_t =
   nfa_to_dfa_help nfa {sigma=nfa.sigma; qs= [(e_closure nfa [nfa.q0])]; q0=(e_closure nfa [nfa.q0]); fs=[]; delta=[] } [e_closure nfa [nfa.q0]] []
+
+let rec accept_help nfa lis s= 
+    match s with
+    | h::t -> accept_help nfa (move nfa lis (Some h)) t
+    | [] -> lis
+
+ let accept (nfa: ('q,char) nfa_t) (s: string) : bool =
+    List.mem (accept_help nfa (nfa_to_dfa nfa).q0 (explode s)) (nfa_to_dfa nfa).fs
