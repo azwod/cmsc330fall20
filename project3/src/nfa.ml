@@ -32,7 +32,7 @@ let explode (s: string) : char list =
 
   let move (nfa: ('q,'s) nfa_t) (qs: 'q list) (s: 's option) : 'q list =
     let f a b = (match b with
-                | (x,y,z) -> if List.mem x qs && y=s then (if List.mem z a then a else z::a) else a
+                | (x,y,z) -> if List.mem x qs && y=s then (if List.mem z a then a else z::a) else a)
                                                 in  List.fold_left f [] nfa.delta
 
   (*let e_closure (nfa: ('q,'s) nfa_t) (qs: 'q list) : 'q list =
