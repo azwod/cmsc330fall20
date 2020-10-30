@@ -44,10 +44,6 @@ let explode (s: string) : char list =
                                                                                                                               else (if List.mem z qs then (
                                                                                                                               if List.mem z a then a else z::a)else a))
                                                                                                                               in  List.fold_left f [] nfa.delta
-  let rec loop (nfa: ('q, 's) nfa_t) (s: 's) (l: 'q list) (qs: 'q list) : 'q list = 
-     let f a b = (match b with
-                | (x,y,z) -> if (y = (Some s)) && (List.mem x qs) then (if List.mem z a then a else (loop nfa s (z::a) qs)) else (if y = None && List.mem x a then (if List.mem z a then a else (loop nfa s (z::a) qs) ) else a))
-                                                in  List.fold_left f l nfa.delta
 
   let rec path(nfa: ('q, 's) nfa_t) (s: 's) (q: 'q) : 'q * bool = 
      let f a b = (match b with
@@ -71,7 +67,10 @@ let explode (s: string) : char list =
 (* Part 2: Subset Construction *)
 (*******************************)
 
-
+let rec loop (nfa: ('q, 's) nfa_t) (s: 's) (l: 'q list) (qs: 'q list) : 'q list = 
+     let f a b = (match b with
+                | (x,y,z) -> if (y = (Some s)) && (List.mem x qs) then (if List.mem z a then a else (loop nfa s (z::a) qs)) else (if y = None && List.mem x a then (if List.mem z a then a else (loop nfa s (z::a) qs) ) else a))
+                                                in  List.fold_left f l nfa.delta
 
 
 let new_states_helper (nfa: ('q, 's) nfa_t) (s: 's) (qs: 'q list) : 'q list = 
