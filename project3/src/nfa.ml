@@ -44,33 +44,33 @@ let explode (s: string) : char list =
                                                                                                                               else (if List.mem z qs then (
                                                                                                                               if List.mem z a then a else z::a)else a))
                                                                                                                               in  List.fold_left f [] nfa.delta
-  let rec accept_helper_part2  (a: ('q, 's) transition) (h: char) : bool =
-    match a with
-               | (x,y,z) -> 
-               if y = (Some h) then true else (if y = None then true else false)
+  let rec loop (nfa: ('q, 's) nfa_t) (s: 's) (l: 'q list) (qs: 'q list) : 'q list = 
+     let f a b = (match b with
+                | (x,y,z) -> if (y = (Some s)) && (List.mem x qs) then (if List.mem z a then a else (loop nfa s (z::a) qs)) else (if y = None && List.mem x a then (if List.mem z a then a else (loop nfa s (z::a) qs) ) else a))
+                                                in  List.fold_left f l nfa.delta
 
-  let rec accept_helper (nfa: ('q, 's) transition list) (c: char list) (place: 'q list) (nfa_fake: ('q, 's) transition list): 'q list =
-    match c with
-    | h::t -> (match nfa_fake with
-               | a::b -> if accept_helper_part2 a h then accept_helper nfa t (match a with
-                                                                              | (x,y,z) -> [z]
-                                                                              ) nfa else accept_helper nfa c (place @ place) b
-               | [] -> place) 
-    | [] -> place
+  let rec path(nfa: ('q, 's) nfa_t) (s: 's) (q: 'q) : q' * bool = 
+     let f a b = (match b with
+                | (x,y,z) -> if (y = (Some s)) then (z,true) else (if y = None then (z,true) else (x,false)))
+                                                in  List.fold_left f q nfa.delta
+
+  let rec accept_helper (nfa: ('q, 's) nfa_t) (s: 's list) (curr: 'q) : bool = 
+    match s with
+    | h::t -> if (match path nfa h curr with
+                  | (a,b) -> b) then accept_helper nfa t (match path nfa h curr with
+                                                          | (a,b) -> a) else false 
+    | [] -> List.mem curr nfa.fs
 
   let accept (nfa: ('q,char) nfa_t) (s: string) : bool =
-    if s = "" then false else (match (accept_helper nfa.delta (explode s) [nfa.q0] nfa.delta) with
-                              | a::b -> if b = [] then(if List.mem a nfa.fs then true else false) else false
-                              | [] -> false) 
+    accept_helper nfa (explode s) nfa.q0
+
+
                               
 
 (*******************************)
 (* Part 2: Subset Construction *)
 (*******************************)
-let rec loop (nfa: ('q, 's) nfa_t) (s: 's) (l: 'q list) (qs: 'q list) : 'q list = 
-     let f a b = (match b with
-                | (x,y,z) -> if (y = (Some s)) && (List.mem x qs) then (if List.mem z a then a else (loop nfa s (z::a) qs)) else (if y = None && List.mem x a then (if List.mem z a then a else (loop nfa s (z::a) qs) ) else a))
-                                                in  List.fold_left f l nfa.delta
+
 
 
 
