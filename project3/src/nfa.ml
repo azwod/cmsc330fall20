@@ -32,7 +32,7 @@ let explode (s: string) : char list =
 
   let move (nfa: ('q,'s) nfa_t) (qs: 'q list) (s: 's option) : 'q list =
     let f a b = (match b with
-                | (x,y,z) -> if List.mem x qs then (if y = s then (if List.mem z a then a else z::a) else a) else a)
+                | (x,y,z) -> if List.mem x qs && y=s then (if List.mem z a then a else z::a) else a
                                                 in  List.fold_left f [] nfa.delta
 
   (*let e_closure (nfa: ('q,'s) nfa_t) (qs: 'q list) : 'q list =
@@ -46,15 +46,15 @@ let explode (s: string) : char list =
                                                                                                                               in  List.fold_left f [] nfa.delta*)
     let e_closure (nfa: ('q,'s) nfa_t) (qs: 'q list) : 'q list =
           let f a b = (match b with
-                | (x,y,z) -> if List.mem x qs || List.mem x a then (if y = None then (if List.mem z a then a else z::a) else a) else a)
+                | (x,y,z) -> if (List.mem x qs && y = None ) || (List.mem x a && y = None ) then (if List.mem z a then a else z::a) else a)
                                                 in  List.fold_left f [] nfa.delta
 
-  let rec path(nfa: ('q, char) nfa_t) (s: char) (q: 'q * bool) : 'q * bool = 
+  (*let rec path(nfa: ('q, char) nfa_t) (s: char) (q: 'q * bool) : 'q * bool = 
      let f a b = (match b with
                 | (x,y,z) -> if y = (Some s) then (z,true) else (if y = None then (z,true) else (x,false)))
                                                 in  List.fold_left f q nfa.delta
 
-  (*let rec accept_helper (nfa: ('q, char) nfa_t) (s: char list) (curr: 'q) : bool = 
+  let rec accept_helper (nfa: ('q, char) nfa_t) (s: char list) (curr: 'q) : bool = 
     match s with
     | h::t -> if (match path nfa h (curr,true) with
                   | (a,b) -> b) then accept_helper nfa t (match path nfa h (curr,true) with
