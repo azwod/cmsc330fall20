@@ -49,7 +49,7 @@ let explode (s: string) : char list =
                 | (x,y,z) -> if (y = (Some s)) && (List.mem x qs) then (if List.mem z a then a else (loop nfa s (z::a) qs)) else (if y = None && List.mem x a then (if List.mem z a then a else (loop nfa s (z::a) qs) ) else a))
                                                 in  List.fold_left f l nfa.delta
 
-  let rec path(nfa: ('q, 's) nfa_t) (s: 's) (q: 'q) : q' * bool = 
+  let rec path(nfa: ('q, 's) nfa_t) (s: 's) (q: 'q) : 'q * bool = 
      let f a b = (match b with
                 | (x,y,z) -> if (y = (Some s)) then (z,true) else (if y = None then (z,true) else (x,false)))
                                                 in  List.fold_left f q nfa.delta
