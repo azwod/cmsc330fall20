@@ -52,7 +52,7 @@ let explode (s: string) : char list =
 
   let rec accept_helper (nfa: ('q, char) nfa_t) (s: char list) (curr: 'q) : bool = 
     match s with
-    | h::t -> if (match path nfa h curr with
+    | h::t -> if (match path nfa h (curr, true) with
                   | (a,b) -> b) then accept_helper nfa t (match path nfa h curr with
                                                           | (a,b) -> a) else false 
     | [] -> List.mem curr nfa.fs
