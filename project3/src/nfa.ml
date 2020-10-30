@@ -50,7 +50,7 @@ let explode (s: string) : char list =
                 | (x,y,z) -> if y = (Some s) then (z,true) else (if y = None then (z,true) else (x,false)))
                                                 in  List.fold_left f q nfa.delta
 
-  let rec accept_helper (nfa: ('q, char) nfa_t) (s: char list) (curr: 'q) : bool = 
+  (*let rec accept_helper (nfa: ('q, char) nfa_t) (s: char list) (curr: 'q) : bool = 
     match s with
     | h::t -> if (match path nfa h (curr,true) with
                   | (a,b) -> b) then accept_helper nfa t (match path nfa h (curr,true) with
@@ -58,7 +58,15 @@ let explode (s: string) : char list =
     | [] -> List.mem curr nfa.fs
 
   let accept (nfa: ('q,char) nfa_t) (s: string) : bool =
-    accept_helper nfa (explode s) nfa.q0
+    accept_helper nfa (explode s) nfa.q0*)
+  
+  let rec accept_help nfa lis s= 
+    match s with
+    | h::t -> accept_help nfa (move nfa lis (Some h)) t
+    | [] -> lis
+
+  let accept (nfa: ('q,char) nfa_t) (s: string) : bool =
+    List.mem (accept_help nfa (nfa_to_dfa nfa).q0 (explode s)) (nfa_to_dfa nfa).fs
 
 
                               
@@ -102,7 +110,7 @@ let rec nfa_to_dfa_step (nfa: ('q,'s) nfa_t) (dfa: ('q list, 's) nfa_t)
 
 let rec nfa_to_dfa_help nfa dfa work taken = 
   match work with
-  | h::t -> if ((List.mem h taken)=false) then nfa_to_dfa_help nfa {sigma=dfa.sigma; qs=union (filter (fun x -> x <> []) (new_states nfa h)) dfa.qs; q0 = dfa.q0; fs=dfa.fs; delta= union (filter (fun (v,p,o)-> o <> [])(new_trans nfa h)) dfa.delta }(union(filter (fun x -> x <> [])(new_states nfa h)) work) (union [h] taken) else nfa_to_dfa_help nfa dfa t taken
+  | h::t -> if ((List.mem h taken)=false) then nfa_to_dfa_help nfa {sigma=dfa.sigma; qs=union (filter (fun x -> x <> []) (new_states nfa h)) dfa.qs; q0 = dfa.q0; fs=dfa.fs; delta= union (filter (fun (v,p,o)-> o <> []) (new_trans nfa h)) dfa.delta } (union (filter (fun x -> x <> []) (new_states nfa h)) work) (union [h] taken) else nfa_to_dfa_help nfa dfa t taken
   | [] -> {sigma=dfa.sigma; qs=dfa.qs; q0=dfa.q0; fs= List.fold_left (fun a x -> union (new_finals nfa x) a) [] dfa.qs; delta=dfa.delta}
 
 let nfa_to_dfa (nfa: ('q,'s) nfa_t) : ('q list, 's) nfa_t =
