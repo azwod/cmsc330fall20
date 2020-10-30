@@ -84,9 +84,13 @@ let new_states (nfa: ('q,'s) nfa_t) (qs: 'q list) : 'q list list =
                       | h::t -> f t ((new_states_helper nfa h qs)::b)
                       | [] -> b) in f (nfa.sigma) []  
 
+let new_trans_helper (nfa: ('q, 's) nfa_t) (s: 's) (qs: 'q list) : ('q list, 's) transition =
+  (qs, Some s, (new_states_helper nfa s qs))
 
 let new_trans (nfa: ('q,'s) nfa_t) (qs: 'q list) : ('q list, 's) transition list =
-  failwith "unimplemented"
+    let rec f a b = ( match a with
+                      | h::t -> f t ((new_trans_helper nfa h qs)::b)
+                      | [] -> b) in f (nfa.sigma) []
 
 let new_finals (nfa: ('q,'s) nfa_t) (qs: 'q list) : 'q list list =
   failwith "unimplemented"
