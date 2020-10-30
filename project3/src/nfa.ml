@@ -47,7 +47,7 @@ let explode (s: string) : char list =
 
   let rec path(nfa: ('q, 's) nfa_t) (s: 's) (q: 'q) : 'q * bool = 
      let f a b = (match b with
-                | (x,y,z) -> if (y = (Some s)) then (z,true) else (if y = None then (z,true) else (x,false)))
+                | (x,y,z) -> if y = s then (z,true) else (if y = None then (z,true) else (x,false)))
                                                 in  List.fold_left f q nfa.delta
 
   let rec accept_helper (nfa: ('q, 's) nfa_t) (s: 's list) (curr: 'q) : bool = 
