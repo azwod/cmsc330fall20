@@ -23,5 +23,21 @@ match lst with
 
 (* Given source code returns a token list. *)
 let rec lexer (input : string) : token list =
-  failwith "unimplemented"
+	let length = String.length input in
+	let rec helper pos = (
+		if pos >= length then [Tok_EOF]
+		else if (Str.string_match (Str.regexp "(") input pos) then 
+		Tok_LParen :: (helper (pos + 1))
+		else if (Str.string_match (Str.regexp ")") input pos) then
+		Tok_RParen :: (helper (pos + 1))
+		else if (Str.string_match (Str.regexp "\\*") input pos) then 
+		Tok_Mult :: (helper (pos + 1))
+		else if (Str.string_match (Str.regexp "\\+") input pos) then
+		Tok_Plus :: (helper (pos + 1))
+		else if (Str.string_match (Str.regexp "-?[0-9]+") input pos) then
+		let match_int = Str.matched_string input in
+		Tok_Int (int_of_string matched_int)::(helper (pos + (String.length matched_int)))
+	)
+	in helper 0  
+  
   
