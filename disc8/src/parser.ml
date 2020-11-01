@@ -56,4 +56,4 @@ and parse_N (toks : token list) : (token list * expr) =
   |Tok_LParen -> let toks2 = match_token toks (Tok_LParen) in
                  let (toks3, expr) = parse_S toks2 in
                  let toks4 = match_token toks3 Tok_RParen in (toks4, expr)
-  |_ -> raise (InvalidInputException "oh noes")                  
+  |_ -> raise (Failure "oh noes")                  
