@@ -27,7 +27,7 @@ let rec lexer (input : string) : token list =
 	let rec helper pos = (
 		if pos >= length then [Tok_EOF]
 		else( if (Str.string_match (Str.regexp "(") input pos) then 
-		(Tok_LParen :: (helper (pos + 1)))
+		Tok_LParen :: (helper (pos + 1))
 		else( if (Str.string_match (Str.regexp ")") input pos) then
 		Tok_RParen :: (helper (pos + 1))
 		else( if (Str.string_match (Str.regexp "\\*") input pos) then
