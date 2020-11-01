@@ -46,7 +46,7 @@ and parse_M (toks : token list) : (token list * expr) =
   match (lookahead toks_after_parse_N) with
   | Tok_Mult -> (let toks2 = match_token toks_after_parse_N Tok_Mult in
                 let (toks3, expr_after_parse_M) = parse_M toks2 in
-                (toks3, Plus (expr, expr_after_parse_M)))
+                (toks3, Mult (expr, expr_after_parse_M)))
   | _ -> (toks_after_parse_N, expr)
             
 (* Parses the N rule. *)
