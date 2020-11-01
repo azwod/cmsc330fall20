@@ -35,9 +35,9 @@ else expr
 and parse_S (toks : token list) : (token list * expr) =
   let (toks_after_parse_M, expr) = parse_M toks in
   match (lookahead toks_after_parse_M) with
-  | Tok_plus -> (let toks2 = match_token toks_after_parse_M Tok_plus in
+  | Tok_plus -> let toks2 = match_token toks_after_parse_M Tok_plus in
                 lets (toks3, expr_after_parse_S) = parse_S toks2 in
-                (toks3, Plus (expr, expr_after_parse_S)))
+                (toks3, Plus (expr, expr_after_parse_S))
   | _ -> (toks_after_parse_M, expr)
 
 (* Parses the M rule. *)
