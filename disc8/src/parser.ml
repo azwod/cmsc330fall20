@@ -27,16 +27,33 @@ let lookahead toks = match toks with
 
 (* Parses a token list. *)
 let rec parser (toks : token list) : expr =
-  failwith "unimplemented"
+  let (remaining_tokens, expr) = parse_S toks in
+  if remaining_tokens <> [Tok_EOF] then raise (InvalidInputException "oh no! still tokens left")
+else expr
 
 (* Parses the S rule. *)
 and parse_S (toks : token list) : (token list * expr) =
-  failwith "unimplemented"
+  let (toks_after_parse_M, expr) = parse_M toks in
+  match (lookahead toks_after_parse_M) with
+  | Tok_plus -> (let toks2 = match_token toks_after_parse_M Tok_plus in
+                lets (toks3, expr_after_parse_S) = parse_S toks2 in
+                (toks3, Plus (expr, expr_after_parse_S)))
+  | _ -> (toks_after_parse_M, expr)
 
 (* Parses the M rule. *)
 and parse_M (toks : token list) : (token list * expr) =
-  failwith "unimplemented"
+  let (toks_after_parse_N, expr) = parse_N toks in
+  match (lookahead toks_after_parse_N) with
+  | Tok_plus -> (let toks2 = match_token toks_after_parse_N Tok_plus in
+                lets (toks3, expr_after_parse_M) = parse_M toks2 in
+                (toks3, Plus (expr, expr_after_parse_M)))
+  | _ -> (toks_after_parse_N, expr)
             
 (* Parses the N rule. *)
 and parse_N (toks : token list) : (token list * expr) =
-  failwith "unimplemented"
+  match lookahead toks with 
+  |Tok_Int i -> let toks2 = match_token toks (Tok_Int i) in (toks2, Int i)
+  |Tok_LParen -> let toks2 = match_token toks (Tok_LParen) in
+                 let (toks3, expr) = parse_S toks2 in
+                 lets toks4 = match_token toks3 Tok_RParen in (toks4, expr)
+  |_ -> raise (InvalidInputException "oh noes")                  
