@@ -28,7 +28,7 @@ let lookahead toks = match toks with
 (* Parses a token list. *)
 let rec parser (toks : token list) : expr =
   let (remaining_tokens, expr) = parse_S toks in
-  if remaining_tokens <> [Tok_EOF] then raise (InvalidInputException "oh no! still tokens left")
+  if remaining_tokens <> [Tok_EOF] then raise (Failure "oh no! still tokens left")
 else expr
 
 (* Parses the S rule. *)
