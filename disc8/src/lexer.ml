@@ -37,7 +37,7 @@ let rec lexer (input : string) : token list =
 		else (if (Str.string_match (Str.regexp "-?[0-9]+") input pos) then(
 		let matched_int = Str.matched_string input in
 		Tok_Int (int_of_string matched_int)::(helper (pos + (String.length matched_int))))
-		else [Tok_EOF])))))
+		else helper (pos+1))))))
 	)
 	in helper 0  
   
