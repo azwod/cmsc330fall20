@@ -35,7 +35,7 @@ else expr
 and parse_S (toks : token list) : (token list * expr) =
   let (toks_after_parse_M, expr) = parse_M toks in
   match (lookahead toks_after_parse_M) with
-  | Tok_Plus -> let toks2 = match_token toks_after_parse_M Tok_plus in
+  | Tok_Plus -> let toks2 = match_token toks_after_parse_M Tok_Plus in
                 let (toks3, expr_after_parse_S) = parse_S toks2 in
                 (toks3, Plus (expr, expr_after_parse_S))
   | _ -> (toks_after_parse_M, expr)
@@ -44,7 +44,7 @@ and parse_S (toks : token list) : (token list * expr) =
 and parse_M (toks : token list) : (token list * expr) =
   let (toks_after_parse_N, expr) = parse_N toks in
   match (lookahead toks_after_parse_N) with
-  | Tok_Plus -> (let toks2 = match_token toks_after_parse_N Tok_plus in
+  | Tok_Mult -> (let toks2 = match_token toks_after_parse_N Tok_Mult in
                 let (toks3, expr_after_parse_M) = parse_M toks2 in
                 (toks3, Plus (expr, expr_after_parse_M)))
   | _ -> (toks_after_parse_N, expr)
